@@ -6,6 +6,7 @@
 // XOR is shorthand for Exclusive OR. This deserves a bit of detail,
 // so here is a truth table to help compare it to a normal OR operation:
 //
+//  Truth Table for OR versus XOR:
 //  Normal OR                 Exclusive OR (XOR)
 //  =================         =================
 //  A  B  |  A OR B           A  B  |  A XOR B
