@@ -4,9 +4,12 @@
 // and sends a signal in a separate output -- the carry flag.
 // To detect an overflow, we perform an AND operation on the two
 // input bits. If both of them are 1, the carry flag will be set.
-// If not, the carry flag will remain clear. 
+// If not, the carry flag will remain clear.
 
-module add_with_carry(a, b, y, c);
+// Here is a truth table for the whole operation, which is
+// commonly known as a half adder.
+
+module half_add_with_carry(a, b, y, c);
   input a;
   input b;
   output y;
