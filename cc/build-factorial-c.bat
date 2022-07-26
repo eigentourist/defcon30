@@ -1,0 +1,1 @@
+cl factorial-c.c /DEBUG /FAs
