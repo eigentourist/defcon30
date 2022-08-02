@@ -26,5 +26,5 @@ WinMain:
 
 segment .data
     MB_OK   equ 0
-	title	db "It's a MessageBox!", 0
-	message db "This messagebox was written in assembly language!", 0
+    title	db "It's a MessageBox!", 0
+    message db "This messagebox was written in assembly language!", 0
