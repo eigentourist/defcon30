@@ -22,7 +22,7 @@ WinMain:
     mov rsp, rbp
     pop rbp
     xor rax, rax
-	call ExitProcess
+    call ExitProcess
 
 segment .data
     MB_OK   equ 0
