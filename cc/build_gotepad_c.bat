@@ -1,2 +1,1 @@
-cl gotepad.c /DEBUG
-cl /LD winhook.c /DEBUG
+cl gotepad.c /DEBUG /FAcs

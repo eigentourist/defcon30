@@ -1,1 +1,1 @@
-cl gremlin.c /DEBUG /FAs
+cl gremlin.c /DEBUG /FAcs

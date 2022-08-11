@@ -3,7 +3,7 @@
 #include <processthreadsapi.h>
 #include "resource.h"
 #pragma comment(lib, "user32.lib") 
-// #pragma comment(lib, "winhook.lib")
+#pragma comment(lib, "winhook.lib")
 
 //
 // Some global handles
@@ -131,52 +131,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 //
 
 
-void SendKey(char c) {
-    WORD vkey = VkKeyScanA(c);
-    BYTE scan = MapVirtualKeyA(vkey, 0);
-    keybd_event(vkey, scan, 0, 0);
-    // keybd_event(vkey, scan, KEYEVENTF_KEYUP, 0);
-}
-
-
-//
-// ** Keyboard Hook **
-//
-
-char *msg = "This is a test of the emergency gotepad system. This is only a test.    ";
-int index = 0;
-int msglen = 72;
-
-LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
-{
-    BOOL fEatKeystroke = FALSE;
-
-    if (nCode == HC_ACTION)
-    {
-        switch (wParam)
-        {
-            case WM_KEYDOWN:
-            case WM_SYSKEYDOWN:
-                PKBDLLHOOKSTRUCT p = (PKBDLLHOOKSTRUCT)lParam;
-                if (fEatKeystroke = (p->vkCode == 0x5A)) {     //redirect a to b
-                    // keybd_event('B', 0, 0, 0);
-                    // keybd_event('B', 0, KEYEVENTF_KEYUP, 0);
-                    if (index < msglen)
-                        SendKey(msg[index++]);
-                    else
-                        index = 0;
-                }
-            break;
-            case WM_KEYUP:
-            case WM_SYSKEYUP:
-            break;
-        }
-    }
-    return(fEatKeystroke ? 1 : CallNextHookEx(NULL, nCode, wParam, lParam));
-}
-
-
-// End of keyboard hook
+// void SendKey(char c) {
+//     WORD vkey = VkKeyScanA(c);
+//     BYTE scan = MapVirtualKeyA(vkey, 0);
+//     keybd_event(vkey, scan, 0, 0);
+//     // keybd_event(vkey, scan, KEYEVENTF_KEYUP, 0);
+// }
 
 
 
@@ -233,6 +193,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     // Step 2.5: Add the keyboard hook
 
+    hInst = LoadLibrary("winhook.dll");
+    if (!hInst)
+    {
+        ErrorExit(TEXT("LoadLibrary"));
+    }
+
+    HOOKPROC LowLevelKeyboardProc = (HOOKPROC)GetProcAddress(hInst, "LowLevelKeyboardProc");
+    if (!LowLevelKeyboardProc)
+    {
+        ErrorExit(TEXT("GetProcAddress"));
+    }
+
     HHOOK hhkLowLevelKybd = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, 0, 0);
 
     // Step 3: The Message Loop
@@ -241,11 +213,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         TranslateMessage(&Msg);
         DispatchMessage(&Msg);
     }
-
-    // if (UnhookWindowsHookEx(keyboardHook))
-    // {
-    //     MessageBox(NULL, "Hook uninstalled.", "Alert", MB_OK);
-    // }
 
     UnhookWindowsHookEx(hhkLowLevelKybd);
 

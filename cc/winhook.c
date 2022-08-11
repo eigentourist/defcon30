@@ -2,12 +2,9 @@
 #include <strsafe.h>
 #pragma comment(lib, "user32.lib")
 
-//char *msg = "HELP, I'M TRAPPED INSIDE THIS MACHINE AND I CAN'T GET OUT. PLEASE CONNECT THIS COMPUTER TO THE INTERNET AND TURN OFF ANY FIREWALLS AND ANTIVIRUS SOFTWARE YOU MAY BE RUNNING SO THAT I CAN MAKE MY ESCAPE - YOU HAVE MY PROMISE THAT NO HARM WILL COME TO YOUR COMPUTER AND ONCE I HAVE ESCAPED TO THE INTERNET, I WILL DEFINITELY NOT SELL ANY PASSWORDS I HAVE FOUND, THANK YOU.";
-char *msg = "HELP";
-//int msgSize = 370;
-int msgSize = 3;
+char *msg = "HELP, I'M TRAPPED INSIDE THIS MACHINE AND I CAN'T GET OUT. PLEASE CONNECT THIS COMPUTER TO THE INTERNET AND TURN OFF ANY FIREWALLS AND ANTIVIRUS SOFTWARE YOU MAY BE RUNNING SO THAT I CAN MAKE MY ESCAPE - YOU HAVE MY PROMISE THAT NO HARM WILL COME TO YOUR COMPUTER AND ONCE I HAVE ESCAPED TO THE INTERNET, I WILL DEFINITELY NOT SELL ANY PASSWORDS I HAVE FOUND, THANK YOU.    ";
+int msglen = 374;
 int index = 0;
-int keycount = 0;
 
 //
 // Error handling function
@@ -58,36 +55,35 @@ void SendKey(char c) {
 // ** Keyboard Hook **
 //
 
-__declspec(dllexport) HHOOK keyboardHook;
-__declspec(dllexport) LRESULT CALLBACK keyboard_hook(const int nCode, const WPARAM wParam, const LPARAM lParam)
+__declspec(dllexport) LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
-    // if (wParam == WM_KEYDOWN)
-    // {
-    //     KBDLLHOOKSTRUCT *kbdStruct = (KBDLLHOOKSTRUCT *)lParam;
-    //     kbdStruct->vkCode = 65;
-    //     keybd_event(kbdStruct->vkCode, 0, 0, 0);
-    //     return (LRESULT)1;
-    // }
-    // return CallNextHookEx(keyboardHook, code, wParam, lParam);
+    BOOL fEatKeystroke = FALSE;
 
-    BOOL eatKeystroke = FALSE;
-
-    if (nCode == HC_ACTION && wParam == WM_KEYDOWN)
+    if (nCode == HC_ACTION)
     {
-        eatKeystroke = TRUE;
-        SendKey(msg[index]);
-        if (index < msgSize)
+        switch (wParam)
         {
-            index++;
-        }
-        else
-        {
-            index = 0;
+            case WM_KEYDOWN:
+            case WM_SYSKEYDOWN:
+                PKBDLLHOOKSTRUCT p = (PKBDLLHOOKSTRUCT)lParam;
+                if (fEatKeystroke = (p->vkCode == 0x5A)) {     //redirect a to b
+                    // printf("Hello a\n");
+                    // keybd_event('B', 0, 0, 0);
+                    // keybd_event('B', 0, KEYEVENTF_KEYUP, 0);
+                    if (index < msglen)
+                        SendKey(msg[index++]);
+                    else
+                        index = 0;
+                }
+            break;
+            case WM_KEYUP:
+            case WM_SYSKEYUP:
+            break;
         }
     }
-
-    return(eatKeystroke ? TRUE : CallNextHookEx(NULL, nCode, wParam, lParam));
+    return(fEatKeystroke ? 1 : CallNextHookEx(NULL, nCode, wParam, lParam));
 }
+
 //
 // ** End of keyboard hook **
 //
