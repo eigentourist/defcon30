@@ -131,15 +131,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 //
 
 
-// void SendKey(char c) {
-//     WORD vkey = VkKeyScanA(c);
-//     BYTE scan = MapVirtualKeyA(vkey, 0);
-//     keybd_event(vkey, scan, 0, 0);
-//     // keybd_event(vkey, scan, KEYEVENTF_KEYUP, 0);
-// }
-
-
-
 //
 // Main program entry point
 //

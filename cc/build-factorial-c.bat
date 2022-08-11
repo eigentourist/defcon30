@@ -1,1 +1,1 @@
-cl factorial-c.c /DEBUG /FAcs
+cl factorial.c /DEBUG /FAcs

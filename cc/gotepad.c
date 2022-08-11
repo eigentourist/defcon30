@@ -242,15 +242,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         DispatchMessage(&Msg);
     }
 
-    // if (UnhookWindowsHookEx(keyboardHook))
-    // {
-    //     MessageBox(NULL, "Hook uninstalled.", "Alert", MB_OK);
-    // }
-
+    // Step 3.5: Remove the keyboard hook
     UnhookWindowsHookEx(hhkLowLevelKybd);
 
     return Msg.wParam;
 }
+
 //
 // End of main program
 //

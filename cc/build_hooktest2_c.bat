@@ -1,0 +1,1 @@
+cl hooktest2.c /DEBUG /FAcs

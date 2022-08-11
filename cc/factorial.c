@@ -1,14 +1,15 @@
 #include <stdio.h>
-#include <windows.h>
-#pragma comment(lib, "factorial_test.lib")
 
 int main(int argc, char **argv)
 {
-    extern _declspec(dllimport) int factorial();
-    HINSTANCE hInst = LoadLibrary("factorial_test.dll");
+    int n = 5;
+    unsigned long long fact = 1;
 
-    int result = factorial(5);
-
-    printf("Factorial is: %d", result);
+    for (int i = 1; i <= n; ++i) 
+    {
+        fact *= i;
+    }
+    printf("Factorial of %d is: %llu", n, fact);
+    
     return 0;
 }

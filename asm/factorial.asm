@@ -46,15 +46,17 @@ main:
     mov     rbp, rsp
     sub     rsp, 32
 
-    mov     rcx, 5
+    mov     rcx, [num]
     call    factorial
 
     lea     rcx, [fmt]
-    mov     rdx, rax
+    mov     rdx, [num]
+    mov     r8, rax
     call    printf
 
     xor     rax, rax
     call    ExitProcess
 
 segment .data
-    fmt db "factorial is: %d", 0xd, 0xa, 0
+    num dd 5
+    fmt db "Factorial of %d is: %llu", 0xd, 0xa, 0
