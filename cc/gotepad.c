@@ -3,7 +3,6 @@
 #include <processthreadsapi.h>
 #include "resource.h"
 #pragma comment(lib, "user32.lib") 
-// #pragma comment(lib, "winhook.lib")
 
 //
 // Some global handles
